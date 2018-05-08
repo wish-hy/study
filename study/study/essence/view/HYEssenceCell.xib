@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HYEssenceCell" rowHeight="138" id="KGk-i7-Jjw" customClass="HYEssenceCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="138"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="137.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10种常见摄影场景的微单/单反相机的设置技巧" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e3g-uu-WKl">
+                        <rect key="frame" x="20" y="10" width="290" height="41"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="header_cry_icon" translatesAutoresizingMaskIntoConstraints="NO" id="FlQ-6S-2aW">
+                        <rect key="frame" x="20" y="56" width="80" height="80"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="FlQ-6S-2aW" secondAttribute="height" multiplier="1:1" id="560-t8-52a"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="header_cry_icon" translatesAutoresizingMaskIntoConstraints="NO" id="1n9-Zd-FBB">
+                        <rect key="frame" x="120" y="56" width="80" height="80"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="header_cry_icon" translatesAutoresizingMaskIntoConstraints="NO" id="ljZ-Gl-zTe">
+                        <rect key="frame" x="220" y="56" width="80" height="80"/>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="1n9-Zd-FBB" firstAttribute="leading" secondItem="FlQ-6S-2aW" secondAttribute="trailing" constant="20" id="8au-xJ-0JX"/>
+                    <constraint firstItem="e3g-uu-WKl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="A55-kA-lyq"/>
+                    <constraint firstItem="ljZ-Gl-zTe" firstAttribute="height" secondItem="FlQ-6S-2aW" secondAttribute="height" id="B8T-hl-POR"/>
+                    <constraint firstItem="ljZ-Gl-zTe" firstAttribute="width" secondItem="FlQ-6S-2aW" secondAttribute="width" id="BaJ-5b-gpZ"/>
+                    <constraint firstItem="1n9-Zd-FBB" firstAttribute="centerY" secondItem="FlQ-6S-2aW" secondAttribute="centerY" id="Dyd-Cx-84o"/>
+                    <constraint firstItem="ljZ-Gl-zTe" firstAttribute="leading" secondItem="1n9-Zd-FBB" secondAttribute="trailing" constant="20" id="H2W-DT-AdB"/>
+                    <constraint firstAttribute="trailing" secondItem="e3g-uu-WKl" secondAttribute="trailing" constant="10" id="NYo-lN-WHP"/>
+                    <constraint firstItem="e3g-uu-WKl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="OVp-Ac-oK3"/>
+                    <constraint firstItem="1n9-Zd-FBB" firstAttribute="height" secondItem="FlQ-6S-2aW" secondAttribute="height" id="ViV-Bb-EnA"/>
+                    <constraint firstItem="FlQ-6S-2aW" firstAttribute="top" secondItem="e3g-uu-WKl" secondAttribute="bottom" constant="5" id="Xk9-dD-lcn"/>
+                    <constraint firstItem="ljZ-Gl-zTe" firstAttribute="centerY" secondItem="FlQ-6S-2aW" secondAttribute="centerY" id="aIt-ho-Y68"/>
+                    <constraint firstItem="FlQ-6S-2aW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="j8v-lL-hdl"/>
+                    <constraint firstItem="1n9-Zd-FBB" firstAttribute="width" secondItem="FlQ-6S-2aW" secondAttribute="width" id="tZR-XV-vrH"/>
+                    <constraint firstAttribute="trailing" secondItem="ljZ-Gl-zTe" secondAttribute="trailing" constant="20" id="wSq-MQ-4QM"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <point key="canvasLocation" x="32" y="161"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="header_cry_icon" width="48" height="48"/>
+    </resources>
+</document>
