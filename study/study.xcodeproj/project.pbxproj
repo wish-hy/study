@@ -10,6 +10,8 @@
 		040E9255208F0C4200BC78FE /* HYRecommendViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 040E9254208F0C4200BC78FE /* HYRecommendViewCell.m */; };
 		0412DE7B208F383100E411D3 /* HYEssenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0412DE79208F383100E411D3 /* HYEssenceCell.m */; };
 		0412DE7C208F383100E411D3 /* HYEssenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0412DE7A208F383100E411D3 /* HYEssenceCell.xib */; };
+		0423A74120A1CF6C008B0868 /* LxGridViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0423A73F20A1CF6B008B0868 /* LxGridViewFlowLayout.m */; };
+		0423A74420A1CF9D008B0868 /* TZTestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0423A74320A1CF9D008B0868 /* TZTestCell.m */; };
 		0426A959208AF1500097BCF2 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0426A94D208AF1500097BCF2 /* AFHTTPSessionManager.m */; };
 		0426A95A208AF1500097BCF2 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0426A950208AF1500097BCF2 /* AFNetworkReachabilityManager.m */; };
 		0426A95B208AF1500097BCF2 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0426A952208AF1500097BCF2 /* AFSecurityPolicy.m */; };
@@ -63,6 +65,7 @@
 		043EF7E8208DD51C001B45EF /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 043EF7E7208DD516001B45EF /* libresolv.9.tbd */; };
 		0452506420A01A93005D0BCF /* HYEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0452506320A01A93005D0BCF /* HYEditPhotoViewController.m */; };
 		045FC0E02091FF6F00711184 /* HYImageDetialController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045FC0DF2091FF6F00711184 /* HYImageDetialController.m */; };
+		046530EC20A2E84D00F0CE59 /* UITextView+BKTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046530EB20A2E84D00F0CE59 /* UITextView+BKTextView.m */; };
 		047EF792209D790A005976EE /* QNPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 047EF75F209D790A005976EE /* QNPipeline.m */; };
 		047EF793209D790A005976EE /* QN_GTM_Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 047EF762209D790A005976EE /* QN_GTM_Base64.m */; };
 		047EF794209D790A005976EE /* QNALAssetFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 047EF764209D790A005976EE /* QNALAssetFile.m */; };
@@ -193,6 +196,10 @@
 		0412DE78208F383100E411D3 /* HYEssenceCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HYEssenceCell.h; sourceTree = "<group>"; };
 		0412DE79208F383100E411D3 /* HYEssenceCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HYEssenceCell.m; sourceTree = "<group>"; };
 		0412DE7A208F383100E411D3 /* HYEssenceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HYEssenceCell.xib; sourceTree = "<group>"; };
+		0423A73F20A1CF6B008B0868 /* LxGridViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LxGridViewFlowLayout.m; sourceTree = "<group>"; };
+		0423A74020A1CF6B008B0868 /* LxGridViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LxGridViewFlowLayout.h; sourceTree = "<group>"; };
+		0423A74220A1CF9D008B0868 /* TZTestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TZTestCell.h; sourceTree = "<group>"; };
+		0423A74320A1CF9D008B0868 /* TZTestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TZTestCell.m; sourceTree = "<group>"; };
 		0426A94B208AF1500097BCF2 /* AFCompatibilityMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFCompatibilityMacros.h; sourceTree = "<group>"; };
 		0426A94C208AF1500097BCF2 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		0426A94D208AF1500097BCF2 /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
@@ -304,6 +311,8 @@
 		0452506320A01A93005D0BCF /* HYEditPhotoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HYEditPhotoViewController.m; sourceTree = "<group>"; };
 		045FC0DE2091FF6F00711184 /* HYImageDetialController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HYImageDetialController.h; sourceTree = "<group>"; };
 		045FC0DF2091FF6F00711184 /* HYImageDetialController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HYImageDetialController.m; sourceTree = "<group>"; };
+		046530EA20A2E84D00F0CE59 /* UITextView+BKTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+BKTextView.h"; sourceTree = "<group>"; };
+		046530EB20A2E84D00F0CE59 /* UITextView+BKTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+BKTextView.m"; sourceTree = "<group>"; };
 		047EF75E209D790A005976EE /* QNPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNPipeline.h; sourceTree = "<group>"; };
 		047EF75F209D790A005976EE /* QNPipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QNPipeline.m; sourceTree = "<group>"; };
 		047EF761209D790A005976EE /* QN_GTM_Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QN_GTM_Base64.h; sourceTree = "<group>"; };
@@ -780,6 +789,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		046530E920A2E84D00F0CE59 /* textView */ = {
+			isa = PBXGroup;
+			children = (
+				046530EA20A2E84D00F0CE59 /* UITextView+BKTextView.h */,
+				046530EB20A2E84D00F0CE59 /* UITextView+BKTextView.m */,
+			);
+			path = textView;
+			sourceTree = "<group>";
+		};
 		047EF75C209D790A005976EE /* QiniuSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -878,6 +896,10 @@
 		04828E08209F4F3C008FABDE /* TZImagePickerController */ = {
 			isa = PBXGroup;
 			children = (
+				0423A74220A1CF9D008B0868 /* TZTestCell.h */,
+				0423A74320A1CF9D008B0868 /* TZTestCell.m */,
+				0423A74020A1CF6B008B0868 /* LxGridViewFlowLayout.h */,
+				0423A73F20A1CF6B008B0868 /* LxGridViewFlowLayout.m */,
 				04828E09209F4F3C008FABDE /* NSBundle+TZImagePicker.h */,
 				04828E0A209F4F3C008FABDE /* NSBundle+TZImagePicker.m */,
 				04828E0B209F4F3C008FABDE /* TZAssetCell.h */,
@@ -1272,6 +1294,7 @@
 		0498E1F0206B75A100E27065 /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				046530E920A2E84D00F0CE59 /* textView */,
 				04828E08209F4F3C008FABDE /* TZImagePickerController */,
 				048E81D3209F038400DD34D2 /* MBProgressHUD */,
 				048E81C6209EFD7100DD34D2 /* ElBrowser */,
@@ -1525,7 +1548,9 @@
 				043EF7D8208DD2A9001B45EF /* QNDnspodEnterprise.m in Sources */,
 				043EF7DE208DD2A9001B45EF /* QNResolvUtil.m in Sources */,
 				0498E261206B75B500E27065 /* NSButton+WebCache.m in Sources */,
+				0423A74120A1CF6C008B0868 /* LxGridViewFlowLayout.m in Sources */,
 				0498E252206B75B500E27065 /* FLAnimatedImageView.m in Sources */,
+				0423A74420A1CF9D008B0868 /* TZTestCell.m in Sources */,
 				04828E2A209F4F3C008FABDE /* TZImageCropManager.m in Sources */,
 				0498E277206B75B500E27065 /* UIImage+MultiFormat.m in Sources */,
 				043EF7D3208DD2A9001B45EF /* QNDnsManager.m in Sources */,
@@ -1655,6 +1680,7 @@
 				0498E27A206B75B500E27065 /* UIImageView+WebCache.m in Sources */,
 				04828E31209F4F3C008FABDE /* TZPhotoPreviewController.m in Sources */,
 				0426A95C208AF1500097BCF2 /* AFURLRequestSerialization.m in Sources */,
+				046530EC20A2E84D00F0CE59 /* UITextView+BKTextView.m in Sources */,
 				043EF7D6208DD2A9001B45EF /* QNNetworkInfo.m in Sources */,
 				0498E278206B75B500E27065 /* UIImage+WebP.m in Sources */,
 				0426A9A0208B7AAE0097BCF2 /* MJRefreshAutoStateFooter.m in Sources */,

@@ -88,14 +88,27 @@ static QNUploadManager *upManager;
  *
  *    @param path          文件路径
  *    @param key               上传到云存储的key，为nil时表示是由七牛生成
- *    @param token             上传需要的token, 由服务器生成
+ *    token             上传需要的token, 由服务器生成
  */
 
-+ (void)putImagePath:(NSString *)path key:(NSString *)key token:(NSString *)token
++ (void)putImagePath:(NSString *)path key:(NSString *)key complete:(void (^)(id objc))complete
 {
     QNUploadManager *unpmanager = [HYHttpTool sharedUpload];
-    [unpmanager putFile:path key:key token:token complete:^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
-        HYLog(@"%@-%@-%@",info,key,resp);
+    [unpmanager putFile:path key:key token:@"GKV_2UBqC8QAkdOn0FmwDDcB2N2sgfzoHjBxqcbw:chdn2rtKm2Q8TPkdL0by3YlDy34=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjozMzUxODY1MDMzfQ==" complete:^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
+//        NSLog(@"------ %@",resp);
+        if (info.ok) {
+            if (complete) {
+                complete(key);
+            }
+        }else{
+            HYLog(@"上传失败");
+        }
+        
+        
+        
+//        HYLog(@"%@-%@-%@",info,key,resp);
     } option:nil];
 }
+
+
 @end

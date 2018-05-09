@@ -81,7 +81,7 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
 //        HYLog(@"请求失败 = %@",error);
 //    }];
     
-//    [HYHttpTool putImagePath:@"/Users/hy/Desktop/黄.jpg" key:nil token:@"GKV_2UBqC8QAkdOn0FmwDDcB2N2sgfzoHjBxqcbw:chdn2rtKm2Q8TPkdL0by3YlDy34=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjozMzUxODY1MDMzfQ=="];
+
     
     
     //    获取路径

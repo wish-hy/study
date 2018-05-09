@@ -9,6 +9,7 @@
 #import "HYPublishViewController.h"
 #import "HYEditPhotoViewController.h"
 #import "TZImagePickerController.h"
+#import "HYEditPhotoViewController.h"
 
 @interface HYPublishViewController ()<TZImagePickerControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
@@ -161,40 +162,44 @@
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:nil];
     NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
-//    if ([type isEqualToString:@"public.image"]) {
-//        TZImagePickerController *tzImagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 delegate:self];
-//        tzImagePickerVc.sortAscendingByModificationDate = self.sortAscendingSwitch.isOn;
-//        [tzImagePickerVc showProgressHUD];
-//        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-//
-//        // save photo and get asset / 保存图片，获取到asset
-//        [[TZImageManager manager] savePhotoWithImage:image location:self.location completion:^(NSError *error){
-//            if (error) {
-//                [tzImagePickerVc hideProgressHUD];
-//                NSLog(@"图片保存失败 %@",error);
-//            } else {
-//                [[TZImageManager manager] getCameraRollAlbum:NO allowPickingImage:YES needFetchAssets:NO completion:^(TZAlbumModel *model) {
-//                    [[TZImageManager manager] getAssetsFromFetchResult:model.result allowPickingVideo:NO allowPickingImage:YES completion:^(NSArray<TZAssetModel *> *models) {
-//                        [tzImagePickerVc hideProgressHUD];
-//                        TZAssetModel *assetModel = [models firstObject];
-//                        if (tzImagePickerVc.sortAscendingByModificationDate) {
-//                            assetModel = [models lastObject];
+    if ([type isEqualToString:@"public.image"]) {
+        TZImagePickerController *tzImagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 delegate:self];
+        tzImagePickerVc.sortAscendingByModificationDate = YES;
+        [tzImagePickerVc showProgressHUD];
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+
+        // save photo and get asset / 保存图片，获取到asset
+        [[TZImageManager manager] savePhotoWithImage:image location:self.location completion:^(NSError *error){
+            if (error) {
+                [tzImagePickerVc hideProgressHUD];
+                NSLog(@"图片保存失败 %@",error);
+            } else {
+                [[TZImageManager manager] getCameraRollAlbum:NO allowPickingImage:YES needFetchAssets:NO completion:^(TZAlbumModel *model) {
+                    [[TZImageManager manager] getAssetsFromFetchResult:model.result allowPickingVideo:NO allowPickingImage:YES completion:^(NSArray<TZAssetModel *> *models) {
+                        [tzImagePickerVc hideProgressHUD];
+                        TZAssetModel *assetModel = [models firstObject];
+                        if (tzImagePickerVc.sortAscendingByModificationDate) {
+                            assetModel = [models lastObject];
+                        }
+//                        if (self.allowCropSwitch.isOn) { // 允许裁剪,去裁剪
+//                            TZImagePickerController *imagePicker = [[TZImagePickerController alloc] initCropTypeWithAsset:assetModel.asset photo:image completion:^(UIImage *cropImage, id asset) {
+//                                [self refreshCollectionViewWithAddedAsset:asset image:cropImage];
+//                            }];
+//                            imagePicker.needCircleCrop = self.needCircleCropSwitch.isOn;
+//                            imagePicker.circleCropRadius = 100;
+//                            [self presentViewController:imagePicker animated:YES completion:nil];
+//                        } else {
+                        HYEditPhotoViewController *edits = [[HYEditPhotoViewController alloc] init];
+                        edits.assetModel = assetModel;
+                        edits.image = image;
+                        [self presentViewController:edits animated:YES completion:nil];
+//                            [self refreshCollectionViewWithAddedAsset:assetModel.asset image:image];
 //                        }
-////                        if (self.allowCropSwitch.isOn) { // 允许裁剪,去裁剪
-////                            TZImagePickerController *imagePicker = [[TZImagePickerController alloc] initCropTypeWithAsset:assetModel.asset photo:image completion:^(UIImage *cropImage, id asset) {
-//////                                [self refreshCollectionViewWithAddedAsset:asset image:cropImage];
-////                            }];
-////                            imagePicker.needCircleCrop = self.needCircleCropSwitch.isOn;
-////                            imagePicker.circleCropRadius = 100;
-////                            [self presentViewController:imagePicker animated:YES completion:nil];
-////                        } else {
-////                            [self refreshCollectionViewWithAddedAsset:assetModel.asset image:image];
-////                        }
-//                    }];
-//                }];
-//            }
-//        }];
-//    }
+                    }];
+                }];
+            }
+        }];
+    }
 }
 
 @end

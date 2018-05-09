@@ -9,6 +9,9 @@
 #ifndef HYHttpURL_h
 #define HYHttpURL_h
 
+// 图片服务器链接地址
+#define imageHost @"http://p7mm0t0oh.bkt.clouddn.com"
+
 // 网络接口配置
 
 // 测试接口     192.168.1.121    http://www.jialiaojy.com/app/index.php/

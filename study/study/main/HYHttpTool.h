@@ -11,6 +11,7 @@
 // 七牛云
 #import "QiniuSDK.h"
 
+
 @interface HYHttpTool : NSObject
 
 + (AFHTTPSessionManager *)sharedHttpSession;
@@ -23,7 +24,10 @@
  *  @param success    请求成功后的回调
  *  @param failure    请求失败之后的回调
  */
-+ (void)GET:(NSString *)url parameters:(NSDictionary *)parameters success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
++ (void)GET:(NSString *)url
+ parameters:(NSDictionary *)parameters
+    success:(void (^)(id responseObject))success
+    failure:(void (^)(NSError *error))failure;
 
 /**
  *  发送一个POST请求
@@ -33,10 +37,15 @@
  *  @param success    请求成功后的回调
  *  @param failure    请求失败之后的回调
  */
-+ (void)POST:(NSString *)url parameters:(NSDictionary *)parameters success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
++ (void)POST:(NSString *)url
+  parameters:(NSDictionary *)parameters
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure;
 
 
 + (QNUploadManager *)sharedUpload;
 
-+ (void)putImagePath:(NSString *)path key:(NSString *)key token:(NSString *)token;
++ (void)putImagePath:(NSString *)path
+                 key:(NSString *)key
+             complete:(void (^)(id objc))complete;
 @end
