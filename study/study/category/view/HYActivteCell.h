@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface HYActivteCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *imageV;
+@property (weak, nonatomic) IBOutlet UILabel *activteName;
+@property (weak, nonatomic) IBOutlet UILabel *activteInfo;
 
 + (HYActivteCell *)creatCellInTableView:(UITableView *)tableView;
 

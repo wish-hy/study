@@ -17,8 +17,11 @@
 
 @interface HYToolsKit : NSObject
 
+// 根据颜色生成图片
 + (UIImage*)createImageWithColor:(UIColor*)color;
 
 // 获取图片尺寸
 +(CGSize)getImageSizeWithURL:(id)imageURL;
+
+
 @end

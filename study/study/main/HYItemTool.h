@@ -14,4 +14,7 @@
 
 // 返回按钮自定义
 + (UIBarButtonItem *)backButtonWithImage:(NSString *)image highImage:(NSString *)highImage target:(id)target action:(SEL)action;
+
+
++ (UIBarButtonItem *)itemButtonWithTitle:(NSString *)title highTitle:(NSString *)highTitle target:(id)target action:(SEL)action;
 @end

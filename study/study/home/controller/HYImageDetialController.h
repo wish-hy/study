@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HYWaterfallFlowModel.h"
+#import "HYHomeMoel.h"
 
 @interface HYImageDetialController : UIViewController
 
-@property (nonatomic ,strong)HYWaterfallFlowModel *model;
+@property (nonatomic ,strong)HYHomeMoel *model;
 
 @end

@@ -595,8 +595,11 @@
     _collectionView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:_collectionView];
     [_collectionView registerClass:[TZTestCell class] forCellWithReuseIdentifier:@"TZTestCell"];
-    [_selectedAssets addObject:self.assetModel.asset];
-    [_selectedPhotos addObject:self.image];
+    if (self.image != nil) {
+        [_selectedAssets addObject:self.assetModel.asset];
+        [_selectedPhotos addObject:self.image];
+    }
+   
     [_collectionView reloadData];
     [_collectionView reloadData];
 }

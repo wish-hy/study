@@ -22,7 +22,7 @@ typedef void(^DidSelect)(NSString *str);
 /* collection */
 @property (strong , nonatomic)UICollectionView *collectionView;
 
-/* 推荐商品数据 */
+/* 数据 */
 @property (strong , nonatomic)NSArray *countDownItem;
 
 @property (nonatomic, copy) DidSelect didSelect;

@@ -38,10 +38,13 @@
 - (void)setUpTabBar
 {
     HYTabBar *tabbar = [[HYTabBar alloc] init];
+//    [tabbar setShadowImage:[UIImage new]];
+    [tabbar setBackgroundImage:[HYToolsKit createImageWithColor:[UIColor whiteColor]]];
     [self setValue:tabbar forKey:@"tabBar"];
     tabbar.click = ^{
-        HYPublishViewController *publish = [[UIStoryboard storyboardWithName:@"Publish" bundle:nil] instantiateViewControllerWithIdentifier:@"HYPublishViewController"];
-        [self presentViewController:publish animated:YES completion:nil];
+        HYPublishViewController *publish = storyboardWith(@"Publish", @"HYPublishViewController");
+        BaseNavigationController *nav = [[BaseNavigationController alloc] initWithRootViewController:publish];
+        [self presentViewController:nav animated:YES completion:nil];
     };
     
 }
@@ -66,6 +69,7 @@
     UITabBarItem *item = [UITabBarItem appearance];
     [item setTitleTextAttributes:normalAtrrs forState:UIControlStateNormal];
     [item setTitleTextAttributes:selectedAtrrs forState:UIControlStateSelected];
+    
 }
 
 /**
@@ -91,8 +95,8 @@
     nav.tabBarItem.image = [UIImage imageNamed:image];
     nav.tabBarItem.selectedImage = [UIImage imageNamed:selectedImage];
     // 随机色  可注释
-    nav.view.backgroundColor = [UIColor colorWithRed:arc4random_uniform(100)/100.0 green:arc4random_uniform(100)/100.0 blue:arc4random_uniform(100)/100.0 alpha:1.0];
-    
+//    nav.view.backgroundColor = [UIColor colorWithRed:arc4random_uniform(100)/100.0 green:arc4random_uniform(100)/100.0 blue:arc4random_uniform(100)/100.0 alpha:1.0];
+    nav.view.backgroundColor = [UIColor whiteColor];
     // 设置子控制器的图片  如图片颜色显示不对
 //    childVc.tabBarItem.image = [UIImage imageNamed:image];
 //    childVc.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImage]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];

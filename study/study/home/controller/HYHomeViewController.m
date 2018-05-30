@@ -13,8 +13,13 @@
 
 #import "HYImageDetialController.h"
 
-#import "HYWaterfallFlowModel.h"
 #import "HYLayout.h"
+
+#import "HYHomeMoel.h"
+
+#import "HYActivteModel.h"
+#import "HYActivteInfoViewController.h"
+#import "HYWebViewController.h"
 
 static NSString *const HYScrollImageViewID = @"HYScrollImageView";
 static NSString *const HYRecommendViewCellID = @"HYRecommendViewCell";
@@ -27,20 +32,39 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
 
 @property (nonatomic ,strong) HYLayout *hylayout;
 
+
+@property (nonatomic ,strong) NSDictionary *homeDate;  // 本地数据
+
+/** 是否正在加载--最新--数据... */
+@property (nonatomic, assign, getter=isHeaderRefreshing) BOOL headerRefreshing;
+/** 是否正在加载--更多--数据... */
+@property (nonatomic, assign, getter=isFooterRefreshing) BOOL footerRefreshing;
+
+@property (assign, nonatomic) NSInteger page; //!< 数据页数.表示下次请求第几页的数据.
+
 @end
 
 
 @implementation HYHomeViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-        self.navigationItem.title = @"首页";
+//        self.navigationItem.title = @"首页";
+    self.title = @"首页";
+    [self setDic];
+    
+    for (int i = 0 ; i < 6; i++) {
+        HYHomeMoel *model = [[HYHomeMoel alloc] init];
+        model.imgURL = @"";
+        model.imgWidth = 500;
+        model.imgHeight = 200;
+        model.pictureName = @"";
+        [self.dataArray addObject:model];
+    }
+    
     self.collectionView.backgroundColor = [UIColor whiteColor];
-//        self.title =@"我的关注";
-        // 相当于下面两句
-//        self.navigationItem.title = @"我的关注";
-        // 无效果
-//        self.tabBarItem.title = @"我的关注";
+
         //设置导航栏的颜色
     //    self.navigationController.navigationBar.barTintColor = [UIColor darkGrayColor];
     // 设置返回按钮字体的颜色
@@ -48,57 +72,106 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
     
         // 设置导航栏左右两边的内容
         self.navigationItem.leftBarButtonItem = [HYItemTool itemWithImage:@"MainTagSubIcon" highImage:@"MainTagSubIconClick" target:self action:@selector(CYEssenceClick)];
-//        self.navigationItem.rightBarButtonItem = [HYItemTool itemWithImage:@"nav_coin_icon" highImage:@"nav_coin_icon" target:self action:@selector(rightClick)];
     
         // 如并排创建两个按钮
 //        UIBarButtonItem *moonButton = [CYItemTool itemWithImage:@"mine-moon-icon" highImage:@"mine-moon-icon-click" target:self action:@selector(moonClick)];
 //        UIBarButtonItem *settingButton = [CYItemTool itemWithImage:@"mine-setting-icon" highImage:@"mine-setting-icon-click" target:self action:@selector(settingClick)];
 //
 //        self.navigationItem.rightBarButtonItems = @[settingButton,moonButton];
-    
-    
-    
-//    NSMutableDictionary *dic = @{
-//                                 @"userId":@"3",
-//                                 @"userName":@"biu~",
-//                                 @"userSex":@"0",
-//                                 @"userBirthday":@"1524311810000",
-//                                 @"userNikename":@"hy",
-//                                 @"userInfo":@"我的毕业设计"
-//                                 };
-//
-//    NSString *str = [self UIUtilsFomateJsonWithDictionary:dic];
-//
-//    // 测试
-//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//    param[@"phone"] = @"123";
-//    param[@"pwd"] = @"333";
-////    param[@"user"] = str;
-//
-//    [HYHttpTool POST:BaseUrl(login) parameters:param success:^(id responseObject) {
-//        HYLog(@"请求成功%@",responseObject);
-//    } failure:^(NSError *error) {
-//        HYLog(@"请求失败 = %@",error);
-//    }];
-    
+
 
     
+    [self setRefresh];
+
+}
+
+- (void)setRefresh {
     
-    //    获取路径
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"chatlog.plist"];
-//    NSFileManager *fileM = [NSFileManager defaultManager];
-//    HYLog(@"file path %@",filePath);
-    //    判断文件是否存在，不存在则直接创建，存在则直接取出文件中的内容
-//    if ([fileM fileExistsAtPath:filePath]) {
-//        NSArray *chatLogArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-//        HYLog(@"array:%@",arrays);
-//        NSMutableArray *chatLogArray = [NSMutableArray arrayWithContentsOfFile:filePath];
-//        self.dataArray = [chatLogArray mutableCopy];
-//        [self.collectionView reloadData];
-//    }
+    self.collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self loadData];
+    }];
     
-    [self storeChatLogWithFile];
+    self.collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        //        取消刷新
+        [self loadData];
+    }];
+    
+    self.collectionView.footer.hidden = YES;
+    
+    // 初始化page
+    self.page = 1;
+    
+    // 一进来就开始刷新
+    [self.collectionView.header beginRefreshing];
+    
+}
+
+-(void)loadData
+{
+    if (self.isHeaderRefreshing) return;
+    self.page = 1;
+    self.headerRefreshing = YES;
+    // 请求首页数据
+    [HYHttpTool POST:BaseUrl(photoLive) parameters:nil success:^(id responseObject) {
+        HYLog(@"请求成功%@",responseObject);
+        //        NSArray *arr = responseObject[@""];
+        //        NSLog(@"第一条数据%@",arr[0]);
+        if ([responseObject[@"code"] intValue] == 0 ) {
+            NSArray *info = responseObject[@"pictures"];
+            NSMutableArray *dataArr = [NSMutableArray array];
+            for (NSDictionary *dict in info) {
+                HYHomeMoel *model = [[HYHomeMoel alloc] init];
+                model.imgURL = dict[@"picturePhoto"][0];
+                NSLog(@"----%@",model.imgURL);
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:model.imgURL]];
+                UIImage *image = [UIImage imageWithData:data];
+                model.imgWidth = image.size.width;
+                model.imgHeight = image.size.height;
+                model.pictureName = dict[@"pictureName"];
+                model.userHeadimg = dict[@"userHeadimg"];
+                model.userName = dict[@"userName"];
+                model.picturePhoto = dict[@"picturePhoto"];
+                model.pictureId = dict[@"pictureId"];
+                model.userId = dict[@"userId"];
+                
+                [dataArr addObject:model];
+            }
+            self.dataArray = dataArr;
+            [_collectionView reloadData];
+            [self.collectionView.header endRefreshing];
+            self.headerRefreshing = NO;
+        }else{
+            [ToastManage showCenterToastWith:responseObject[@"msg"] starY:500];
+        }
+    } failure:^(NSError *error) {
+        HYLog(@"请求失败 加载本地数据 = %@",error);
+        if ([_homeDate[@"code"] intValue] == 0 ) {
+            NSArray *info = _homeDate[@"pictures"];
+            NSMutableArray *dataArr = [NSMutableArray array];
+            for (NSDictionary *dict in info) {
+                HYHomeMoel *model = [[HYHomeMoel alloc] init];
+                model.imgURL = dict[@"picturePhoto"][0];
+                NSLog(@"本地数据----%@",model.imgURL);
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:model.imgURL]];
+                UIImage *image = [UIImage imageWithData:data];
+                model.imgWidth = image.size.width;
+                model.imgHeight = image.size.height;
+                model.pictureName = dict[@"pictureName"];
+                model.userHeadimg = dict[@"userHeadimg"];
+                model.userName = dict[@"userName"];
+                model.picturePhoto = dict[@"picturePhoto"];
+                model.pictureId = dict[@"pictureId"];
+                model.userId = dict[@"userId"];
+                
+                [dataArr addObject:model];
+            }
+            self.dataArray = dataArr;
+            [_collectionView reloadData];
+            [self.collectionView.header endRefreshing];
+            self.headerRefreshing = NO;
+        }
+        
+    }];
 }
 
 -(void)storeChatLogWithFile
@@ -108,69 +181,11 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
     [HYHttpTool POST:urlStr parameters:nil success:^(id responseObject) {
         NSMutableArray *array = [responseObject[@"data"] mutableCopy];
         [array removeLastObject];
-
-//        //    获取路径
-//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"chatlog.plist"];
-//        NSFileManager *fileM = [NSFileManager defaultManager];
-//        //    判断文件是否存在，不存在则直接创建，存在则直接取出文件中的内容
-//        if (![fileM fileExistsAtPath:filePath]) {
-//            [fileM createFileAtPath:filePath contents:nil attributes:nil];
-//        }
-//        NSMutableArray *chatLogArray = [NSMutableArray arrayWithContentsOfFile:filePath];
-//        if ((chatLogArray.count == 0)) {
-//            chatLogArray = [NSMutableArray arrayWithCapacity:1];
-//        }
-
-        self.dataArray = [NSMutableArray array];
-  
-            // 并发队列的创建方法
-            dispatch_queue_t queue = dispatch_queue_create("net.bujige.testQueue", DISPATCH_QUEUE_CONCURRENT);
-            // 异步执行任务创建方法
-            dispatch_async(queue, ^{
-                // 这里放异步执行任务代码
-                
-                for (NSDictionary *dic in array) {
-                    //    要保存的自定义模型
-                    HYWaterfallFlowModel *model = [[HYWaterfallFlowModel alloc]init];
-                        int i = 0;
-                model.imgURL = dic[@"image_url"];
-//                CGSize sizes = [HYToolsKit getImageSizeWithURL:model.imgURL];
-                
-                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:model.imgURL]];
-                UIImage *image = [UIImage imageWithData:data];
-                model.imgWidth = image.size.width;
-                model.imgHeight = image.size.height;
-                model.title = dic[@"abs"];
-                    [self.dataArray addObject:model];
-                    i++;
-                    HYLog(@"%d,%@,%f,%f",i,model.imgURL,model.imgHeight,model.imgWidth);
-                }
-                
-                [self.collectionView reloadData];
-            });
+        
+        for (NSDictionary *dic in array) {
+            NSLog(@"...%@",dic[@"image_url"]);
+        }
             
-            
-
-//            [chatLogArray addObject:model];
-
-
-//                [_collectionView reloadData];
-        /*
-         这是正常的保存和取出数组内容到文件
-         存
-         [chatLogArray writeToFile:filePath atomically:YES];
-         取
-         NSMutableArray *array = [NSMutableArray arrayWithContentsOfFile:filePath];
-         */
-
-
-        //    注意 数组中保存的是自定义模型，要想把数组保存在文件中，应该用下面的方法
-        //    存
-//        [NSKeyedArchiver archiveRootObject:chatLogArray toFile:filePath];
-//        //    取
-//        NSArray *arrays = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-//        HYLog(@"array:%@",arrays);
     } failure:^(NSError *error) {
         HYLog(@"请求错误--%@",error);
     }];
@@ -188,44 +203,16 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.section == 0) {
-//        UICollectionViewCell *reusableview = nil;
-//
-////            HYScrollImageView *scrollImg = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HYScrollImageViewID forIndexPath:indexPath];
-//            HYScrollImageView *scrollImg = [collectionView dequeueReusableCellWithReuseIdentifier:HYScrollImageViewID forIndexPath:indexPath];
-//            scrollImg.imageGroupArray = @[
-//                                          @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
-//                                          @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-//                                          @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
-//                                          ];
-//            scrollImg.banner = ^(NSInteger i) {
-//                HYLog(@"点击了%ld",(long)i);
-//            };
-//
-//            reusableview = scrollImg;
-//        [_collectionView reloadData];
-//        return reusableview;
-//    }else
-////        if (indexPath.section == 1)
-//    {
-//        UICollectionViewCell *collectionCell = nil;
-//        HYRecommendViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:HYRecommendViewCellID forIndexPath:indexPath];
-//        cell.backgroundColor = [UIColor redColor];
-//        collectionCell = cell;
-//        return collectionCell;
-//    }
-//        else{
         HYWaterfallFlowCell *cell = (HYWaterfallFlowCell *)[collectionView dequeueReusableCellWithReuseIdentifier:HYWaterfallFlowCellID forIndexPath:indexPath];
         cell.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
         cell.model = self.dataArray[indexPath.row];
 
         return cell;
-//    }
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    HYWaterfallFlowModel *modes = self.dataArray[indexPath.row];
+    HYHomeMoel *modes = self.dataArray[indexPath.row];
     HYLog(@"选中了第%ld个item",indexPath.row);
     HYImageDetialController *detial = [[HYImageDetialController alloc] init];
     detial.model = modes;
@@ -235,38 +222,44 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionReusableView *reusableview = nil;
-//    if (kind == UICollectionElementKindSectionHeader) {
-        HYScrollImageView *scrollImg = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HYScrollImageViewID forIndexPath:indexPath];
+    HYScrollImageView *scrollImg = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HYScrollImageViewID forIndexPath:indexPath];
 
-        scrollImg.imageGroupArray = @[
-                                      @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
-                                      @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-                                      @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
+    scrollImg.imageGroupArray = @[
+                                  @"http://cmscdn.xitek.com/thumb/69/245482-424-286.jpg",
+                                      @"https://cms.qn.img-space.com/290_module_images/240/5afa3a2b5ec8a.jpg",
+                                      @"https://pp.qn.img-space.com/201805/11/7ccb2484f7d908cb6815269328db8dcb.jpg"
                                       ];
-        scrollImg.banner = ^(NSInteger i) {
-            HYLog(@"HYLog点击了%ld",(long)i);
-            [ToastManage showCenterToastWith:[NSString stringWithFormat:@"点击了轮播图%ld",i] starY:500];
+    scrollImg.banner = ^(NSInteger i) {
+        if (i == 2) {
+            HYActivteInfoViewController *activte = storyboardWith(@"Activte", @"HYActivteInfoViewController");
+            HYActivteModel *model = [[HYActivteModel alloc] init];
+            model.activityName = @"夏末小时光";
+            model.activityInfo = @"【活动主题】：夏末小时光\n【活动时间】：5月27日（下午）\n【集合时间】：13：30\n【拍摄时间】：14:00—16:30\n【活动结束时间】：16:30分\n【活动人数】：8名\n【模特人数】：一名\n大树分割线\n【集合地点】：漫茶时光\n【活动地点】：北京石景山雕塑公园南街北口远洋山水12号楼底商6号（兴业银行南行60米）\n【乘车路线】：地铁1号线（八宝山地铁站下） 具体再导航{漫茶时光店}\n大树分割线\n【化妆造型】由北京I DU化妆造型\n【报名方式】微信316360485\n【咨询电话】18518712468\n【联系人】邢氏客服\n【活动费用】：320元（邢氏会员八折）\n《精品小班教学活动名额有限.报名的影友请联系客服，确定报名后交付活动经费》";
+            activte.model = model;
+            activte.urlStr = @"http://huodong.qn.img-space.com/201805/23/6f6b3414fdacd78d0b17f63fa731f37c.jpg?imageView2/2/w/570/h/380/q/90/ignore-error/1/";
+            [self.navigationController pushViewController:activte animated:YES];
+        }else if (i == 1){
+            HYWebViewController *webView = [[HYWebViewController alloc] init];
+            webView.urls = @"http://p7mm0t0oh.bkt.clouddn.com/234242.html";
+            webView.webTitle = @"wish_hy";
+            [self.navigationController pushViewController:webView animated:YES];
+        }else{
+            
+        }
+//    [ToastManage showCenterToastWith:[NSString stringWithFormat:@"点击了轮播图%ld",i] starY:500];
         };
 
-        reusableview = scrollImg;
-//    }
+    reusableview = scrollImg;
 
     return reusableview;
 }
-
-
-//// item宽高
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//
-//    return CGSizeMake(ScreenWidth, 200);
-//}
 
 
 #pragma mark -- hylayout
 // 计算item高度的代理方法，将item的高度与indexPath传递给外界
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(HYLayout *)collectionViewLayout heightForWidth:(CGFloat)width atIndexPath:(NSIndexPath *)indexPath
 {
-    HYWaterfallFlowModel *model = self.dataArray[indexPath.item];
+    HYHomeMoel *model = self.dataArray[indexPath.item];
 //    return model.imgHeight / model.imgWidth * width;
     return (model.imgHeight + 400) / model.imgWidth * width;
 }
@@ -280,7 +273,6 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
 //区内边距
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(HYLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(0, 5, 5, 5);
-    
 }
 
 //行间距
@@ -294,15 +286,14 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
         return 5;
 }
 
-//
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(HYLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    return CGSizeMake(CGRectGetWidth(collectionView.frame), 340);
+    return CGSizeMake(CGRectGetWidth(collectionView.frame), 360);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(HYLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    return CGSizeMake(CGRectGetWidth(collectionView.frame), 10);
+    return CGSizeMake(CGRectGetWidth(collectionView.frame), 80);
 }
 
 
@@ -343,26 +334,145 @@ static NSString *const HYWaterfallFlowCellID = @"HYWaterfallFlowCell";
 
 // 拼接json字符串
 - (NSString *)UIUtilsFomateJsonWithDictionary:(NSDictionary *)dic {
-    NSArray *keys = [dic allKeys];
-    NSString *string = [NSString string];
-    for (NSString *key in keys) {
-        
-        NSString *value = [dic objectForKey:key];
-        
-        value = [NSString stringWithFormat:@"\"%@\"",value];
-        
-        NSString *newkey = [NSString stringWithFormat:@"\"%@\"",key];
-        
-        if (!string.length) {
-            string = [NSString stringWithFormat:@"%@:%@}",newkey,value];
-        }else {
-            string = [NSString stringWithFormat:@"%@:%@,%@",newkey,value,string];
-        }
+    
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString;
+    if (!jsonData) {
+        NSLog(@"%@",error);
+    }else{
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
     }
-    string = [NSString stringWithFormat:@"{%@",string];
-    HYLog(@"===%@",string);
-    return string;
+    NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
+    NSRange range = {0,jsonString.length};
+    //去掉字符串中的空格
+    [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
+    
+    NSRange range2 = {0,mutStr.length};
+    
+    //去掉字符串中的换行符
+    [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+    HYLog(@"===%@",mutStr);
+    return mutStr;
 }
 
+-(void)setDic
+{
+    _homeDate = @{
+        @"code": @0,
+        @"msg": @"success",
+        @"pictures": @[
+                     @{
+                         @"pictureId": @41,
+                         @"picturePhoto": @[
+                                           @"http://p7mm0t0oh.bkt.clouddn.com/6fd80a2768.jpg",
+                                           @"http://p7mm0t0oh.bkt.clouddn.com/defaultHeader.jpeg"
+                                           ],
+                         @"pictureName": @"biu",
+                         @"userId": @51,
+                         @"userName": @"hahaha",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhizhu.png"
+                     },
+                     @{
+                         @"pictureId": @35,
+                         @"picturePhoto": @[
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/6fd80a2768.jpg",
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/defaultHeader.jpeg"
+                                          ],
+                         @"pictureName": @"影集的名字",
+                         @"userId": @51,
+                         @"userName": @"hahaha",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhizhu.png"
+                     },
+                     @{
+                         @"pictureId": @33,
+                         @"picturePhoto": @[
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/wdy4.jpeg",
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/zhuti2.png"
+                                          ],
+                         @"pictureName": @"名字嘛，随便来一点",
+                         @"userId": @31,
+                         @"userName": @"云淡风轻",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhuti3.png"
+                     },
+                     @{
+                         @"pictureId": @17,
+                         @"picturePhoto": @[
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/44bdc7706.jpg"
+                                          ],
+                         @"pictureName": @"来一次测试",
+                         @"userId": @51,
+                         @"userName": @"hahaha",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhizhu.png"
+                     },
+                     @{
+                         @"pictureId": @1,
+                         @"picturePhoto": @[
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/1bfb7ee4bd4.jpg",
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/31baabd373.jpg",
+                                          @"http://p7mm0t0oh.bkt.clouddn.com/44bdc7706.jpg"
+                                          ],
+                         @"pictureName": @"不知道",
+                         @"userId": @41,
+                         @"userName": @"所噶",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/wdy4.jpeg"
+                         },@{
+                         @"pictureId": @41,
+                         @"picturePhoto": @[
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/6fd80a2768.jpg",
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/defaultHeader.jpeg"
+                                 ],
+                         @"pictureName": @"biu",
+                         @"userId": @51,
+                         @"userName": @"hahaha",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhizhu.png"
+                         },
+                     @{
+                         @"pictureId": @35,
+                         @"picturePhoto": @[
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/6fd80a2768.jpg",
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/defaultHeader.jpeg"
+                                 ],
+                         @"pictureName": @"影集的名字",
+                         @"userId": @51,
+                         @"userName": @"hahaha",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhizhu.png"
+                         },
+                     @{
+                         @"pictureId": @33,
+                         @"picturePhoto": @[
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/wdy4.jpeg",
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/zhuti2.png"
+                                 ],
+                         @"pictureName": @"名字嘛，随便来一点",
+                         @"userId": @31,
+                         @"userName": @"云淡风轻",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhuti3.png"
+                         },
+                     @{
+                         @"pictureId": @17,
+                         @"picturePhoto": @[
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/44bdc7706.jpg"
+                                 ],
+                         @"pictureName": @"来一次测试",
+                         @"userId": @51,
+                         @"userName": @"hahaha",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/zhizhu.png"
+                         },
+                     @{
+                         @"pictureId": @1,
+                         @"picturePhoto": @[
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/1bfb7ee4bd4.jpg",
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/31baabd373.jpg",
+                                 @"http://p7mm0t0oh.bkt.clouddn.com/44bdc7706.jpg"
+                                 ],
+                         @"pictureName": @"不知道",
+                         @"userId": @41,
+                         @"userName": @"所噶",
+                         @"userHeadimg": @"http://p7mm0t0oh.bkt.clouddn.com/wdy4.jpeg"
+                         }
+                     ]
+    };
+}
 
 @end

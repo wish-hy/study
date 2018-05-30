@@ -10,4 +10,8 @@
 
 @interface HYRecommendViewCell : UICollectionViewCell
 
+@property (nonatomic ,strong) UIImageView *image;
+
+@property (nonatomic ,strong) NSString *urlStr;
+
 @end

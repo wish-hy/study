@@ -11,6 +11,7 @@
 
 #import "OttoFPSButton.h"  // fps显示
 #import "GHConsole.h"  // 控制台显示
+
 @interface AppDelegate ()
 
 @end
@@ -27,13 +28,14 @@
     // 3.显示窗口
     [self.window makeKeyAndVisible];
     
-    // fps显示
-    CGRect frame = CGRectMake(0, 300, 80, 30);
-    UIColor *btnBGColor = [UIColor colorWithWhite:0.000 alpha:0.700];
-    OttoFPSButton *btn = [OttoFPSButton setTouchWithFrame:frame titleFont:[UIFont systemFontOfSize:15] backgroundColor:btnBGColor backgroundImage:nil];
-    [self.window addSubview:btn];
     
-    [[GHConsole sharedConsole] startPrintLog];
+//    // fps显示
+//    CGRect frame = CGRectMake(0, 300, 80, 30);
+//    UIColor *btnBGColor = [UIColor colorWithWhite:0.000 alpha:0.700];
+//    OttoFPSButton *btn = [OttoFPSButton setTouchWithFrame:frame titleFont:[UIFont systemFontOfSize:15] backgroundColor:btnBGColor backgroundImage:nil];
+//    [self.window addSubview:btn];
+    
+//    [[GHConsole sharedConsole] startPrintLog];
     return YES;
 }
 

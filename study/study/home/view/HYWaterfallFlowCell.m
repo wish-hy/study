@@ -58,7 +58,7 @@
     _destript = [[UILabel alloc] init];
     _destript.font = [UIFont systemFontOfSize:14];
 //    _destript.backgroundColor = [UIColor blueColor];
-    _destript.text = @"哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈";
+//    _destript.text = @"哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈";
     _destript.numberOfLines = 2;
     _destript.textColor = [UIColor colorWithHexString:@"888888"];
     _destript.textAlignment = NSTextAlignmentLeft;
@@ -97,18 +97,14 @@
     }];
 }
 
--(void)setModel:(HYWaterfallFlowModel *)model {
+-(void)setModel:(HYHomeMoel *)model {
     _model = model;
-    UIImageView *imgV = (UIImageView *)[self viewWithTag:10];
-//    UIVisualEffectView *visulEffectView = (UIVisualEffectView *)[self viewWithTag:20];
-//    UILabel *label = (UILabel *)[self viewWithTag:30];
-    
-    
-//    visulEffectView.frame = CGRectMake(0, self.frame.size.height-16, self.frame.size.width, 16);
-//    label.frame = CGRectMake(0, 3, CGRectGetWidth(visulEffectView.frame), 10);
-    [_imgV sd_setImageWithURL:[NSURL URLWithString:model.imgURL] placeholderImage:[UIImage imageNamed:@"image"]];
-//    [_imgV sd_setImageWithURL:[NSURL URLWithString:_model.imgURL]];
-//    label.text = _model.title;
+
+    [_imgV sd_setImageWithURL:[NSURL URLWithString:model.imgURL] placeholderImage:[HYToolsKit createImageWithColor:RandomColor]];
+    _destript.text = model.pictureName;
+    _userName.text = model.userName;
+//    NSLog(@"userName = %@",model.users.userName);
+    [_headerImage sd_setImageWithURL:[NSURL URLWithString:model.userHeadimg] placeholderImage:[HYToolsKit createImageWithColor:RandomColor]];
     
 }
 

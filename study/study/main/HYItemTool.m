@@ -33,4 +33,18 @@
     return [[UIBarButtonItem alloc] initWithCustomView:button];
 }
 
++ (UIBarButtonItem *)itemButtonWithTitle:(NSString *)title highTitle:(NSString *)highTitle target:(id)target action:(SEL)action
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitle:title forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [button sizeToFit];
+    button.contentEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0); // 这里微调返回键的位置
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    return [[UIBarButtonItem alloc] initWithCustomView:button];
+}
+
 @end

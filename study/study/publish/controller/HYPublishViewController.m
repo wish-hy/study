@@ -10,6 +10,8 @@
 #import "HYEditPhotoViewController.h"
 #import "TZImagePickerController.h"
 #import "HYEditPhotoViewController.h"
+#import "HYeditWordViewController.h"
+#import "LMWordViewController.h"
 
 @interface HYPublishViewController ()<TZImagePickerControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
@@ -19,6 +21,7 @@
 
 @property (nonatomic, strong) UIImagePickerController *imagePickerVc;
 @property (strong, nonatomic) CLLocation *location;
+
 
 @end
 
@@ -53,6 +56,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:YES];
     [self addTap];
 }
 
@@ -131,7 +135,9 @@
 
 -(void)blogImageClick
 {
-    
+    LMWordViewController *editor = [[LMWordViewController alloc] init];
+////    [self presentViewController:editor animated:YES completion:nil];
+    [self.navigationController pushViewController:editor animated:YES];
 }
 
 

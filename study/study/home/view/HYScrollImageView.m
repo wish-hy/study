@@ -33,7 +33,7 @@
 -(void)setUpUI
 {
     self.backgroundColor = [UIColor whiteColor];
-    _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, self.frame.size.height - 180) delegate:self placeholderImage:nil];
+    _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, self.frame.size.height - 180) delegate:self placeholderImage:[HYToolsKit createImageWithColor:RandomColor]];
     //    _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFill;
     _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleToFill;
     _cycleScrollView.autoScrollTimeInterval = 3.0;
@@ -51,7 +51,7 @@
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.minimumLineSpacing = 5;
-    layout.itemSize = CGSizeMake(self.backGround.frame.size.height - 50 , self.backGround.frame.size.height - 50);
+    layout.itemSize = CGSizeMake(self.backGround.frame.size.height, self.backGround.frame.size.height - 50);
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal; //滚动方向
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     [self addSubview:_collectionView];
@@ -65,13 +65,13 @@
     
     [self.backGround addSubview:_collectionView];
     
-    _countDownItem = @[@"",@"",@"",@"",@"",@"",@"",@"",@""];
+    _countDownItem = @[@"http://p7mm0t0oh.bkt.clouddn.com/zhuti1.png",@"http://p7mm0t0oh.bkt.clouddn.com/zhuti2.png",@"http://p7mm0t0oh.bkt.clouddn.com/zhuti3.png",@"http://p7mm0t0oh.bkt.clouddn.com/zhuti1.png",@"http://p7mm0t0oh.bkt.clouddn.com/zhuti2.png",@"http://p7mm0t0oh.bkt.clouddn.com/zhuti3.png"];
 }
 
 -(void)setImageGroupArray:(NSArray *)imageGroupArray
 {
     _imageGroupArray = imageGroupArray;
-    _cycleScrollView.placeholderImage = [UIImage imageNamed:@"image"];
+    _cycleScrollView.placeholderImage = [HYToolsKit createImageWithColor:RandomColor];
     if (imageGroupArray.count == 0) {
         return;
     }
@@ -107,7 +107,7 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     HYRecommendViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HYRecommendViewCell" forIndexPath:indexPath];
-//    cell.recommendItem = _countDownItem[indexPath.row];
+    cell.urlStr = _countDownItem[indexPath.row];
     
     cell.backgroundColor = RandomColor;
     return cell;

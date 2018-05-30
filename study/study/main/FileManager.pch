@@ -93,11 +93,6 @@
 // CachesPath
 #define CachesPath [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]
 
-//self 的弱引用
-#define  WeakSelf(weakSelf)  __weak typeof(self) weakSelf =  self;
-
-// 弱引用
-#define HYWeakSelf __weak typeof(self) weakSelf = self;
 
 /** 屏幕尺寸 */
 #define Screen_Bounds [UIScreen mainScreen].bounds
@@ -116,6 +111,8 @@
 
 /** RGB色 */
 #define RGB_Color(r,g,b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+
+#define storyboardWith(name,identfifier) [[UIStoryboard storyboardWithName:(name) bundle:nil] instantiateViewControllerWithIdentifier:(identfifier)]
 
 /** RGB色 + 透明度 */
 #define RGB_alphaColor(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]

@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HYWaterfallFlowModel.h"
+#import "HYHomeMoel.h"
 
 
 @interface HYWaterfallFlowCell : UICollectionViewCell
 
-@property (nonatomic ,strong)HYWaterfallFlowModel *model;
+@property (nonatomic ,strong)HYHomeMoel *model;
 
 @end
