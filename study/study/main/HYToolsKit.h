@@ -24,4 +24,7 @@
 +(CGSize)getImageSizeWithURL:(id)imageURL;
 
 
+/**************************************判断手机号码是否正确******************************************/
++ (BOOL) isMobileTwo:(NSString *)mobileNumbel;
+
 @end
